@@ -6,24 +6,6 @@ from numba import cuda
 import math
 from simulate import load_data, summary_stats
 
-# # --- CUDA Kernel ---
-# @cuda.jit
-# def jacobi_kernel(u_curr, u_next, interior_mask):
-#     # Determine the absolute position of the thread in the 2D grid
-#     i, j = cuda.grid(2)
-    
-#     # Boundary check: ensure thread is within the interior of the 514x514 grid
-#     # u_curr.shape[0]-1 corresponds to 513
-#     if 1 <= i < u_curr.shape[0] - 1 and 1 <= j < u_curr.shape[1] - 1:
-#         # Check the mask (mask is 512x512, indexed from 0)
-#         if interior_mask[i-1, j-1]:
-#             # Perform the Jacobi update for one cell
-#             u_next[i, j] = 0.25 * (u_curr[i, j-1] + u_curr[i, j+1] + 
-#                                    u_curr[i-1, j] + u_curr[i+1, j])
-#         else:
-#             # For walls/outside, keep the existing value
-#             u_next[i, j] = u_curr[i, j]
-
 @cuda.jit
 def jacobi_kernel(u_curr, u_next, interior_mask):
     i, j = cuda.grid(2)
